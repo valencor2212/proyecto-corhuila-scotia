@@ -1,0 +1,80 @@
+/* Estructura principal */
+.home-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #CFFDC7; /* Fondo verde claro */
+    position: relative;
+    overflow: hidden;
+}
+
+.header {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    padding: 30px 0;
+    color: black;
+    font-size: 20px;
+    z-index: 3;
+}
+
+.bienvenida-texto {
+    font-size: 16px; /* Tamaño del texto */
+    font-weight: 600; /* Peso de la fuente */
+    color: black; /* Color del texto */
+    line-height: 22.4px; /* Altura de línea */
+    margin-top: 20px; /* Añade margen superior para separarlo del header */
+    padding: 0 20px; /* Espaciado lateral */
+    text-align: center; /* Centrar el texto horizontalmente */
+    word-wrap: break-word; /* Permitir que el texto se ajuste automáticamente */
+    font-family: 'Inter', sans-serif; /* Fuente definida */
+    display: block; /* Asegura que ocupe el espacio completo horizontalmente */
+}
+
+
+.logo {
+    max-width: 150px;
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    
+}
+
+
+.sidebar {
+    position: relative;
+    left: 50px;
+    top: 10px;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+}
+
+.menu-btn {
+    background-color: #AFF4C6; /* Color de fondo */
+    border: none; /* Sin bordes */
+    padding: 15px 20px; /* Espaciado interno */
+    border-radius: 6px; /* Bordes redondeados */
+    margin: 10px 0; /* Margen entre botones */
+    cursor: pointer; /* Indicador de que es un botón */
+    width: 200px; /* Ancho del botón */
+    font-size: 16px; /* Tamaño de fuente */
+    font-weight: 400; /* Peso de la fuente según requerimiento */
+    font-family: 'Inter', sans-serif; /* Tipografía Inter */
+    line-height: 16px; /* Altura de línea */
+    color: #1e1e1e; /* Color del texto */
+    text-align: center; /* Texto centrado */
+    word-wrap: break-word; /* Control de ajuste de palabras */
+    transition: background-color 0.3s ease; /* Transición para efecto hover */
+  }
+.menu-btn:hover {
+    background-color: #34C759;
+ 
+} 
+
+
+
+
+
+
+
