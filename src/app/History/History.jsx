@@ -1,15 +1,36 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Para poder navegar entre rutas
-import './History.css'; // Archivo CSS para los estilos
-import logo from '../assets/img/logo.png'; // Asegúrate de que esta ruta sea correcta para el logo
-import Icon from '../assets/icons/Icon.svg'; // Ruta del ícono de regresar
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './History.css';
+import logo from '../assets/img/logo.png';
+import Icon from '../assets/icons/Icon.svg';
+import { getUpdatedWorksByTeacher } from '../services/agenda.service';
 
-const History = ({ nombreUsuario, onLogout, historial }) => {
-  const navigate = useNavigate(); // Hook para navegar entre rutas
+const History = ({ teacherId: propTeacherId, onLogout }) => {
+  const [historial, setHistorial] = useState([]);
+  const navigate = useNavigate();
 
-  // Función para manejar el botón de regresar
+  // Obtén el ID del profesor desde `localStorage` si no se pasa como prop
+  const teacherId = propTeacherId || localStorage.getItem('teacherId');
+
+  useEffect(() => {
+    async function fetchHistorial() {
+      if (!teacherId) {
+        console.error('El ID del profesor es requerido.');
+        return;
+      }
+      try {
+        const data = await getUpdatedWorksByTeacher(teacherId);
+        console.log('Historial:', data);
+        setHistorial(data);
+      } catch (error) {
+        console.error('Error al obtener el historial:', error);
+      }
+    }
+    fetchHistorial();
+  }, [teacherId]);
+
   const handleBack = () => {
-    navigate(-1); // Regresa a la página anterior
+    navigate(-1);
   };
 
   return (
@@ -19,10 +40,7 @@ const History = ({ nombreUsuario, onLogout, historial }) => {
 
       <div className="header">
         <img src={logo} alt="Logo Corhuila" className="logo" />
-        <h1 className="bienvenida-texto">
-          HISTÓRICO DE DOCUMENTOS
-        </h1>
-       
+        <h1 className="bienvenida-texto">HISTÓRICO DE DOCUMENTOS</h1>
       </div>
 
       <div className="sidebar">
@@ -31,13 +49,17 @@ const History = ({ nombreUsuario, onLogout, historial }) => {
       </div>
 
       <div className="history-content">
-        {historial.map((item, index) => (
-          <div key={index} className="history-item">
-            <h2>{item.titulo}</h2>
-            <p>{item.descripcion}</p>
-            <button className="abrir-btn">ABRIR</button>
-          </div>
-        ))}
+        {historial.length > 0 ? (
+          historial.map((item, index) => (
+            <div key={index} className="history-item">
+              <h2>{item.titulo || 'Título no disponible'}</h2>
+              <p>{item.descripcion || 'Descripción no disponible'}</p>
+              <button className="abrir-btn">ABRIR</button>
+            </div>
+          ))
+        ) : (
+          <p>No hay historial disponible.</p>
+        )}
       </div>
 
       {/* Botón de regresar */}

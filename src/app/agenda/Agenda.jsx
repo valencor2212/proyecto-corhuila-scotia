@@ -12,8 +12,18 @@ const Agenda = () => {
     const [currentView, setCurrentView] = useState(0);
     const [works, setWorks] = useState([]);
     const [updatedWorks, setUpdatedWorks] = useState({});
+    const [teacherId, setTeacherId] = useState(null);
 
     useEffect(() => {
+        // Obtener el teacherId del almacenamiento local
+        const storedTeacherId = localStorage.getItem("teacherId");
+        if (storedTeacherId) {
+            setTeacherId(parseInt(storedTeacherId));
+        } else {
+            console.error("Teacher ID no encontrado en localStorage.");
+            navigate("/login"); // Redirige a la página de inicio de sesión si no hay teacherId
+        }
+
         async function fetchWorks() {
             const result = await getWorks();
             setWorks(result);
@@ -25,7 +35,7 @@ const Agenda = () => {
             setUpdatedWorks(emptyUpdates);
         }
         fetchWorks();
-    }, []);
+    }, [navigate]);
 
     const handleBack = () => {
         navigate(-1);
@@ -38,6 +48,7 @@ const Agenda = () => {
     const handlePrev = () => {
         if (currentView > 0) setCurrentView(currentView - 1);
     };
+
     const filteredWorks = [
         works.filter(work => ['Preparación de clases', 'Evaluación de aprendizajes a estudiantes', 'Gestión de eventos académicos'].includes(work.name)),
         works.filter(work => ['Gestión de semilleros de investigación', 'Elaboración de propuestas para convocatorias de CTeI', 'Gestión de proyectos de investigación en CTeI', 'Dirección de grupos de investigación', 'Elaboración de artículos científicos y textos académicos'].includes(work.name)),
@@ -53,7 +64,6 @@ const Agenda = () => {
     };
 
     const handleSubmit = async () => {
-
         let hasEditedWork = false;
 
         for (let workId in updatedWorks) {
@@ -65,7 +75,6 @@ const Agenda = () => {
         }
 
         if (!hasEditedWork) {
-
             Swal.fire({
                 icon: 'warning',
                 title: 'No se ha editado ninguna labor',
@@ -73,7 +82,6 @@ const Agenda = () => {
                 confirmButtonText: 'Aceptar'
             });
         } else {
-
             try {
                 for (let workId in updatedWorks) {
                     const work = updatedWorks[workId];
@@ -81,7 +89,7 @@ const Agenda = () => {
                         await updateWork(workId, {
                             estimatedWeeklyTime: work.estimatedWeeklyTime || 0,
                             estimatedSemiannualTime: work.estimatedSemiannualTime || 0
-                        });
+                        }, teacherId);
                     }
                 }
 
@@ -108,7 +116,6 @@ const Agenda = () => {
             }
         }
     };
-
 
     return (
         <div className="agenda-container">
@@ -143,7 +150,6 @@ const Agenda = () => {
             <button className="back-btn" onClick={handleBack}>
                 <img src={Icon} alt="Regresar" className="back-icon" />
             </button>
-
 
             <div className="ellipse-bg large-ellipse"></div>
             <div className="ellipse-bg medium-ellipse">

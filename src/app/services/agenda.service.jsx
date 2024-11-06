@@ -14,10 +14,10 @@ export const getWorks = async () => {
     }
 };
 
-export const updateWork = async (id, data) => {
+export const updateWork = async (id, data, teacherId) => {
     try {
-        console.log('Actualizando labor con id:', id, 'y data:', data);
-        const response = await axios.put(`${WORKS_API_URL}/${id}`, data);
+        console.log('Actualizando labor con id:', id, 'data:', data, 'teacherId:', teacherId);
+        const response = await axios.put(`${WORKS_API_URL}/${id}?teacherId=${teacherId}`, data);
         console.log('Respuesta del servidor:', response.data);
         return response.data;
     } catch (error) {
@@ -25,6 +25,23 @@ export const updateWork = async (id, data) => {
         throw error;
     }
 };
+export const getUpdatedWorksByTeacher = async (teacherId) => {
+    if (!teacherId) {
+        console.error('El ID del profesor no está definido');
+        throw new Error('El ID del profesor es requerido');
+    }
+    try {
+        const response = await axios.get(`${WORKS_API_URL}/updated-by-teacher`, {
+            params: { teacherId }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error obteniendo las actualizaciones de las labores del profesor:', error);
+        throw error;
+    }
+};
+
+
 
 export const getTeacherInfo = async (id) => {
     try {

@@ -14,7 +14,6 @@ const Login = ({ onLoginSuccess }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Verificar si los campos están vacíos
     if (!username || !password) {
       Swal.fire({
         icon: 'warning',
@@ -38,17 +37,21 @@ const Login = ({ onLoginSuccess }) => {
       });
     
       if (response.status === 200) {
+        const { nombre, teacherId } = response.data; // Supone que el backend envía teacherId
+        
         Swal.fire({
           icon: 'success',
           title: '¡Login exitoso!',
-          text: `Bienvenido a la plataforma, ${response.data.nombre}`,
+          text: `Bienvenido a la plataforma, ${nombre}`,
           confirmButtonText: 'OK',
         });
-    
-        localStorage.setItem('nombreUsuario', response.data.nombre);
-    
+        
+        // Guardar el nombre y teacherId en el localStorage
+        localStorage.setItem('nombreUsuario', nombre);
+        localStorage.setItem('teacherId', teacherId); // Guarda el ID del profesor en el localStorage
+
         setHighlightError({ username: false, password: false });
-        onLoginSuccess(response.data.nombre);
+        onLoginSuccess(nombre);
         navigate('/home');
       }
     } catch (err) {
@@ -59,7 +62,7 @@ const Login = ({ onLoginSuccess }) => {
         confirmButtonText: 'Aceptar',
       });
     }
-}    
+  }    
 
   return (
     <div className="login-container">
@@ -97,7 +100,7 @@ const Login = ({ onLoginSuccess }) => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Ingrese su usuario"
-              className={`input-field ${highlightError.username ? 'input-error' : ''}`} // Resaltar campo vacío en rojo
+              className={`input-field ${highlightError.username ? 'input-error' : ''}`}
             />
           </div>
           <div className="form-group">
@@ -107,7 +110,7 @@ const Login = ({ onLoginSuccess }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Ingrese su contraseña"
-              className={`input-field ${highlightError.password ? 'input-error' : ''}`} // Resaltar campo vacío en rojo
+              className={`input-field ${highlightError.password ? 'input-error' : ''}`}
             />
           </div>
           <button type="submit" className="login-btn">
