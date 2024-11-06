@@ -14,6 +14,8 @@ Ejecuta este comando en la carpeta raiz del proyecto para ejecutar las dependenc
 ### `npm install axios sweetalert2`
 Ejecuta este comando en la carpeta raiz del proyecto para ejecutar las dependencias axios para peticiones HTTP y Sweet alert para alertas amigables con interfaz de usuario
 
+### `npm install xlsx`
+Instalar librería excel 
 
 ### `npm start`
 
