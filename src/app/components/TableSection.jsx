@@ -1,7 +1,6 @@
 import React from 'react';
 
 const TableSection = ({ title, rows, onUpdateWork, updatedWorks }) => {
-  console.log("Rows in TableSection:", rows);
 
   const handleChange = (id, field, value) => {
     const newValue = value >= 0 ? value : 0; // Evitar valores negativos
