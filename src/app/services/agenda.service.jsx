@@ -16,9 +16,7 @@ export const getWorks = async () => {
 
 export const updateWork = async (id, data, teacherId) => {
     try {
-        console.log('Actualizando labor con id:', id, 'data:', data, 'teacherId:', teacherId);
         const response = await axios.put(`${WORKS_API_URL}/${id}?teacherId=${teacherId}`, data);
-        console.log('Respuesta del servidor:', response.data);
         return response.data;
     } catch (error) {
         console.error('Error actualizando la labor:', error);
