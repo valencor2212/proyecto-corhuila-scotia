@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const WORKS_API_URL = 'http://localhost:9000/Work';
-const TEACHERS_API_URL = 'http://localhost:9000/api/teachers';
+const WORKS_API_URL = 'http://ec2-18-218-203-108.us-east-2.compute.amazonaws.com:9000/Work';
+const TEACHERS_API_URL = 'http://ec2-18-218-203-108.us-east-2.compute.amazonaws.com:9000/api/teachers';
 
 
 export const getWorks = async () => {

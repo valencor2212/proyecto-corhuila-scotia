@@ -31,7 +31,7 @@ const Login = ({ onLoginSuccess }) => {
     }
 
     try {
-      const response = await axios.post('http://localhost:9000/api/teachers/login', {
+      const response = await axios.post('http://ec2-18-218-203-108.us-east-2.compute.amazonaws.com:9000/api/teachers/login', {
         username,
         password,
       });
