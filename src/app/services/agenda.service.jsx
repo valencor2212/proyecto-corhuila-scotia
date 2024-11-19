@@ -38,7 +38,22 @@ export const getUpdatedWorksByTeacher = async (teacherId) => {
         throw error;
     }
 };
-
+export const downloadReportExcel = async (teacherId) => {
+    if (!teacherId) {
+        console.error('El ID del profesor no está definido');
+        throw new Error('El ID del profesor es requerido');
+    }
+    try {
+        const response = await axios.get(`${WORKS_API_URL}/updated-by-teacher/report/excel`, {
+            params: { teacherId },
+            responseType: 'blob' 
+        });
+        return response.data; 
+    } catch (error) {
+        console.error('Error descargando el reporte en Excel:', error);
+        throw error;
+    }
+};
 
 
 export const getTeacherInfo = async (id) => {

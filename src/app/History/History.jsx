@@ -4,7 +4,7 @@ import * as XLSX from 'xlsx';
 import './History.css';
 import logo from '../assets/img/logo.png';
 import Icon from '../assets/icons/Icon.svg';
-import { getUpdatedWorksByTeacher } from '../services/agenda.service';
+import { getUpdatedWorksByTeacher, downloadReportExcel } from '../services/agenda.service';
 
 const History = ({ teacherId: propTeacherId, onLogout }) => {
   const [historial, setHistorial] = useState([]);
@@ -33,11 +33,26 @@ const History = ({ teacherId: propTeacherId, onLogout }) => {
     navigate(-1);
   };
 
-  const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(historial);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Historial');
-    XLSX.writeFile(workbook, 'Historial_Academico.xlsx');
+  const exportToExcel = async () => {
+    try {
+      if (!teacherId) {
+        console.error('El ID del profesor es requerido.');
+        return;
+      }
+      const excelBlob = await downloadReportExcel(teacherId);
+      
+      // Crear una URL para el blob y descargar el archivo
+      const url = window.URL.createObjectURL(new Blob([excelBlob]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'Agenda_Semestral_Profesoral.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error al descargar el archivo Excel:', error);
+    }
   };
 
   const toggleExpandRow = (index) => {
